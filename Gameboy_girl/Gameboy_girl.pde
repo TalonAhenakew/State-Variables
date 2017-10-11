@@ -4,11 +4,16 @@ int state;
 float speed = 0;
 float gravity = .26;
 boolean moveleft, moveright, jump;
-
+int boxtop,boxbottom,boxright,boxleft;
+int hl,sl;
+float enemyx = 700,enemyy = 550; 
+int direction = 2;
+int 
 
 
 void setup(){
- size(800,800); 
+  size(800,800); 
+  boxbox();
 }
 
 
@@ -18,9 +23,8 @@ void draw(){
   
   
   if (state == 0){
-   fill(0);
-   rectMode(CENTER);
-   rect(width/2,height/2,250,250);
+   startscreen();
+   highlight();
     
   } 
   
@@ -29,12 +33,20 @@ void draw(){
     
     movement();
     
+    strokeWeight(2);
     fill(150,190,190);
     rectMode(CORNER);
     rect(0,550,1000,900);
+    
+    playersetup();
+    enemystuff();
+    enemymovement();
+  } 
   
-   //player's box
-    fill(0, 150, 255);
+  
+}
+void playersetup(){
+   fill(0, 150, 255);
     rectMode(CENTER);
     rect(xplr, yplr, 40, 40);
   
@@ -57,12 +69,7 @@ void draw(){
   if (xplr < 50){
    xplr = 50; 
   }
-    
-  } 
-  
-  
 }
-
 
 
 
@@ -120,5 +127,72 @@ void keyReleased() {
    if (key == 'r' || key == 'R'){
     state = 1;  
   }
+  }
+}
+
+void boxbox(){
+  boxleft=width/2-250;
+  boxtop=height/3*2-125;
+  boxbottom=height/3*2+125;
+  boxright=width/2+250;
+}
+
+
+
+void mouseClicked(){
+  if (mouseX>boxleft && mouseX<boxright && mouseY>boxtop && mouseY<boxbottom){
+     state = 1; 
+  }
+}
+
+void highlight(){
+ if (mouseX>boxleft && mouseX<boxright && mouseY>boxtop && mouseY<boxbottom){
+   hl = 255;
+   sl = 0;
+ }
+ 
+ else{
+  hl = 0;
+  sl = 255;
+ }
+}
+
+
+void startscreen(){
+  fill(255,0,0);
+  text("Box Jumper",width/2-220,height/3);
+  
+  strokeWeight(5);
+  fill(hl);
+  rectMode(CENTER);
+  rect(width/2,height/3*2,500,250);
+  fill(sl);
+  textSize(80);
+  text("Start game",width/2-200,height/3*2+20);
+}
+
+void enemystuff(){
+  fill(255,20,0);
+  rect(enemyx,enemyy,80,80);
+  
+  
+  
+}
+
+
+void enemymovement(){
+  
+ if (enemyy == 200){
+   direction = 1; 
+ }
+ if (enemyy == 500){
+   direction = 2; 
+ }
+ 
+ if (direction == 2){
+   enemyy -= 5;
+ }
+  if (direction == 1){
+   enemyy += 5;
   }
 }
